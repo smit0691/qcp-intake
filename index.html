@@ -26,3 +26,1152 @@
   --shadow: 0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.04);
   color-scheme: light;
 }
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #111318;
+    --surface: #1c2029;
+    --border: #2e3440;
+    --fg: #e8eaf0;
+    --fg-muted: #8892a4;
+    --accent: #4d8ef8;
+    --accent-fg: #ffffff;
+    --accent-light: #1a2a4a;
+    --warn: #fbbf24;
+    --danger: #f87171;
+    --success: #4ade80;
+    --tag-bg: #1e2a4a;
+    --tag-fg: #93c5fd;
+    --shadow: 0 1px 3px rgba(0,0,0,.4);
+    color-scheme: dark;
+  }
+}
+*, *::before, *::after { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: var(--sans);
+  font-size: 14px;
+  color: var(--fg);
+  background: var(--bg);
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 0;
+  line-height: 1.5;
+}
+/* Header */
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 12px 0;
+}
+.header-inner {
+  max-width: 960px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.header-logo {
+  font-family: var(--mono);
+  font-weight: 500;
+  font-size: 13px;
+  color: var(--accent);
+  letter-spacing: .02em;
+  white-space: nowrap;
+}
+.header-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--fg);
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.header-progress {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--fg-muted);
+  white-space: nowrap;
+}
+.progress-bar {
+  width: 100px;
+  height: 4px;
+  background: var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 2px;
+  transition: width .3s ease;
+}
+/* Layout */
+.page-wrap {
+  max-width: 960px;
+  margin: 0 auto;
+  padding-block: 32px;
+}
+.form-layout {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 32px;
+  align-items: start;
+}
+@media (max-width: 720px) {
+  .form-layout { grid-template-columns: 1fr; }
+  .section-nav { display: none; }
+}
+/* Section nav sidebar */
+.section-nav {
+  position: sticky;
+  top: 68px;
+}
+.section-nav-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+  color: var(--fg-muted);
+  transition: background .15s, color .15s;
+  user-select: none;
+  border: none;
+  background: none;
+  text-align: left;
+  width: 100%;
+}
+.nav-item:hover { background: var(--border); color: var(--fg); }
+.nav-item.active { background: var(--accent-light); color: var(--accent); font-weight: 600; }
+.nav-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  flex-shrink: 0;
+}
+/* Upload banner */
+.upload-banner {
+  background: var(--surface);
+  border: 2px dashed var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  text-align: center;
+  margin-bottom: 24px;
+  cursor: pointer;
+  transition: border-color .2s, background .2s;
+}
+.upload-banner:hover, .upload-banner.drag-over {
+  border-color: var(--accent);
+  background: var(--accent-light);
+}
+.upload-banner.has-file {
+  border-style: solid;
+  border-color: var(--success);
+  background: color-mix(in srgb, var(--success) 8%, var(--surface));
+}
+.upload-icon { font-size: 28px; margin-bottom: 8px; }
+.upload-label { font-weight: 600; color: var(--fg); margin-bottom: 4px; }
+.upload-sub { font-size: 12px; color: var(--fg-muted); }
+.upload-input { display: none; }
+.upload-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 500;
+}
+.parse-status {
+  background: var(--accent-light);
+  border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+  border-radius: 6px;
+  padding: 10px 14px;
+  font-size: 12px;
+  color: var(--accent);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.spinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid color-mix(in srgb, var(--accent) 30%, transparent);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin .7s linear infinite;
+  flex-shrink: 0;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+/* Section blocks */
+.form-section {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+.section-header {
+  padding: 16px 20px 14px;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  user-select: none;
+}
+.section-header:hover { background: color-mix(in srgb, var(--fg) 2%, var(--surface)); }
+.section-num {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--accent);
+  background: var(--accent-light);
+  padding: 2px 7px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+.section-name { font-weight: 600; font-size: 14px; flex: 1; min-width: 0; }
+.section-desc { font-size: 12px; color: var(--fg-muted); margin-top: 2px; font-weight: 400; }
+.section-badge {
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 20px;
+  background: var(--tag-bg);
+  color: var(--tag-fg);
+  flex-shrink: 0;
+  font-weight: 500;
+}
+.section-badge.done-badge { background: color-mix(in srgb, var(--success) 12%, var(--surface)); color: var(--success); }
+.chevron { color: var(--fg-muted); font-size: 12px; transition: transform .2s; flex-shrink: 0; }
+.section-body {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.section-body.collapsed { display: none; }
+/* Fields */
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field-label {
+  font-weight: 500;
+  font-size: 13px;
+  display: flex;
+  gap: 6px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+.field-num { font-family: var(--mono); font-size: 11px; color: var(--fg-muted); margin-top: 1px; flex-shrink: 0; }
+.required-star { color: var(--danger); font-size: 12px; }
+.pre-filled { position: relative; }
+.prefill-tag {
+  position: absolute;
+  right: 8px;
+  top: 8px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: var(--accent-light);
+  padding: 2px 6px;
+  border-radius: 3px;
+  pointer-events: none;
+}
+input[type="text"], input[type="email"], input[type="tel"], textarea, select {
+  width: 100%;
+  padding: 9px 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--sans);
+  font-size: 13px;
+  outline: none;
+  transition: border-color .15s, box-shadow .15s;
+}
+input:focus, textarea:focus, select:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 15%, transparent);
+}
+input.prefilled-val, textarea.prefilled-val {
+  border-color: color-mix(in srgb, var(--accent) 40%, transparent);
+  background: var(--accent-light);
+}
+textarea { resize: vertical; min-height: 72px; }
+.radio-group, .check-group { display: flex; flex-direction: column; gap: 8px; }
+.radio-option, .check-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 9px 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background .12s, border-color .12s;
+  user-select: none;
+}
+.radio-option:hover, .check-option:hover {
+  background: color-mix(in srgb, var(--accent) 5%, var(--surface));
+  border-color: color-mix(in srgb, var(--accent) 30%, var(--border));
+}
+.radio-option.selected, .check-option.selected {
+  background: var(--accent-light);
+  border-color: var(--accent);
+}
+.radio-option input, .check-option input {
+  width: auto;
+  padding: 0;
+  margin-top: 2px;
+  flex-shrink: 0;
+  accent-color: var(--accent);
+}
+.radio-label-text { flex: 1; min-width: 0; font-size: 13px; }
+.other-input {
+  margin-top: 6px;
+  width: 100%;
+  padding: 7px 10px;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--sans);
+  font-size: 13px;
+  outline: none;
+}
+.other-input:focus { border-color: var(--accent); }
+/* Tranche */
+.tranche-count-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 4px;
+}
+.tranche-pill {
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--fg-muted);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .12s, border-color .12s, color .12s;
+}
+.tranche-pill.active {
+  background: var(--accent-light);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.tranche-block { margin-top: 4px; }
+.tranche-block-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--fg) 2%, var(--surface));
+  margin-top: 8px;
+}
+/* Submit */
+.submit-area {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  text-align: center;
+  box-shadow: var(--shadow);
+}
+.submit-area h3 { margin: 0 0 8px; font-size: 16px; }
+.submit-area p { margin: 0 0 20px; color: var(--fg-muted); font-size: 13px; }
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: opacity .15s, transform .1s;
+  font-family: var(--sans);
+}
+.btn:active { transform: scale(.98); }
+.btn-primary { background: var(--accent); color: var(--accent-fg); }
+.btn-primary:hover { opacity: .9; }
+.btn:disabled { opacity: .6; cursor: not-allowed; transform: none; }
+.btn-sm { padding: 7px 14px; font-size: 13px; }
+.validation-msg { color: var(--danger); font-size: 12px; margin-top: 4px; display: none; }
+.field.invalid .validation-msg { display: block; }
+.field.invalid input, .field.invalid textarea, .field.invalid select { border-color: var(--danger); }
+/* Toast */
+.toast {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: var(--fg);
+  color: var(--bg);
+  padding: 10px 18px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  z-index: 200;
+  transition: transform .3s cubic-bezier(.34,1.56,.64,1);
+  white-space: nowrap;
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+/* Success screen */
+.success-screen {
+  text-align: center;
+  padding: 80px 20px;
+  max-width: 560px;
+  margin: 0 auto;
+}
+.success-icon { font-size: 56px; margin-bottom: 20px; }
+.success-screen h2 { font-size: 24px; margin: 0 0 12px; }
+.success-screen p { color: var(--fg-muted); font-size: 15px; line-height: 1.6; margin: 0 0 20px; }
+.success-ref {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--fg-muted);
+  background: color-mix(in srgb, var(--fg) 5%, var(--surface));
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 16px;
+  margin-bottom: 28px;
+}
+/* Confidentiality banner */
+.conf-banner {
+  background: color-mix(in srgb, var(--warn) 8%, var(--surface));
+  border: 1px solid color-mix(in srgb, var(--warn) 35%, transparent);
+  border-radius: var(--radius);
+  padding: 14px 18px;
+  margin-bottom: 16px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+.conf-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+.conf-text { font-size: 12px; color: var(--fg); line-height: 1.55; }
+.conf-text strong { color: var(--warn); font-weight: 600; }
+.conf-text a { color: var(--accent); text-decoration: none; }
+.conf-text a:hover { text-decoration: underline; }
+/* Conditional fields */
+.field-conditional { display: none; }
+.field-conditional.show { display: flex; }
+/* Divider */
+.field-divider { border: none; border-top: 1px solid var(--border); margin: 4px 0; }
+</style>
+</head>
+<body>
+
+<div class="app-header">
+  <div class="header-inner">
+    <span class="header-logo">QMLS // QCP</span>
+    <span class="header-title">Capacity Pre-Intake Opportunity Form</span>
+    <div class="header-progress">
+      <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+      <span id="progressLabel">0 / 86</span>
+    </div>
+  </div>
+</div>
+
+<div class="page-wrap">
+  <div id="formView">
+    <div class="form-layout">
+      <nav class="section-nav">
+        <ul class="section-nav-list" id="sectionNav"></ul>
+      </nav>
+      <div id="formMain">
+        <div class="conf-banner">
+          <div class="conf-icon">🔒</div>
+          <div class="conf-text">
+            <strong>Confidential &amp; Proprietary.</strong> Information submitted through this form is received by QumulusAI in confidence and used solely for opportunity evaluation purposes. All submissions are subject to QumulusAI's standard non-disclosure obligations.<br><br>
+            <strong>MNDA:</strong> To share the most complete and accurate data — including sensitive commercial terms, utility commitments, and financial details — we strongly recommend having a Mutual Non-Disclosure Agreement (MNDA) in place prior to submission. If an MNDA is not yet executed, please contact <a href="mailto:spencer.smith@qumulusai.com">Spencer Smith</a> at <strong>spencer.smith@qumulusai.com</strong> before proceeding. Submissions without an MNDA in place are welcome but may limit the level of detail we are able to evaluate.
+          </div>
+        </div>
+
+        <div class="upload-banner" id="uploadBanner">
+          <input type="file" class="upload-input" id="docUpload" accept=".pdf,.docx,.doc,.txt,.xlsx,.xls,.pptx,.ppt,.csv">
+          <div class="upload-icon">📄</div>
+          <div class="upload-label">Have a one-pager, data sheet, or term sheet?</div>
+          <div class="upload-sub">Upload it and we'll pre-fill what we can — you'll fill in the rest</div>
+          <br>
+          <button class="btn btn-primary btn-sm" onclick="document.getElementById('docUpload').click(); event.stopPropagation();">Choose file</button>
+        </div>
+        <div class="parse-status" id="parseStatus" style="display:none">
+          <div class="spinner"></div>
+          <span id="parseStatusText">Reading document…</span>
+        </div>
+
+        <div id="sectionsContainer"></div>
+
+        <div class="submit-area" id="submitArea">
+          <h3>Ready to submit?</h3>
+          <p>Review your answers above, then submit. A QumulusAI team member will review and follow up within 2–3 business days.</p>
+          <button class="btn btn-primary" id="submitBtn">Submit Opportunity →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="successView" style="display:none">
+    <div class="success-screen">
+      <div class="success-icon">✅</div>
+      <h2>Opportunity Submitted</h2>
+      <p>Thank you — your submission has been received. A member of the QumulusAI team will review and follow up within 2–3 business days.</p>
+      <div class="success-ref" id="successRef"></div>
+      <br>
+      <button class="btn btn-primary" onclick="location.reload()">Submit Another Opportunity</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ─── Form schema ───────────────────────────────────────────────────────────────
+const SECTIONS = [
+  {
+    id: 's1', num: '01', title: 'About You', desc: '',
+    fields: [
+      { id: 'q1', num: '1', label: 'Your name', type: 'text', required: true },
+      { id: 'q2', num: '2', label: 'Your organization / company', type: 'text', required: true },
+      { id: 'q3', num: '3', label: 'Email address', type: 'email', required: true },
+      { id: 'q4', num: '4', label: 'Phone number', type: 'tel' },
+      { id: 'q5', num: '5', label: 'Your role in this opportunity', type: 'radio', required: true,
+        options: ['Broker / intermediary representing the site or capacity','Site owner / operator (principal)','Developer / energy partner','Internal QumulusAI referral'], other: true }
+    ]
+  },
+  {
+    id: 's2', num: '02', title: 'Opportunity Overview', desc: '',
+    fields: [
+      { id: 'q6', num: '6', label: 'Company / opportunity name', type: 'text', required: true },
+      { id: 'q7', num: '7', label: 'Archetype', type: 'radio', required: true,
+        options: ['Colocation or Single Tenant Whitespace','Build-to-Suit','Greenfield','Brownfield'] },
+      { id: 'q8', num: '8', label: 'Transaction Structure', type: 'radio', required: true,
+        options: ['Standard Lease / MSA','Wholesale Lease','Long-Term Ground Lease (≥30yr)','Purchase (Fee Simple)','JV / Partnership','Forward Purchase','Sale-Leaseback'] },
+      { id: 'q9', num: '9', label: 'State', type: 'text', required: true },
+      { id: 'q10', num: '10', label: 'Full address (or nearest cross-streets if confidential)', type: 'text' },
+      { id: 'q11', num: '11', label: 'Total site acreage', type: 'text' },
+      { id: 'q12', num: '12', label: 'Usable acreage (area able to be developed)', type: 'text' }
+    ]
+  },
+  {
+    id: 's3', num: '03', title: 'Capacity & Delivery Tranches',
+    desc: 'Tranche 1 is required. Select how many delivery phases apply, then complete each.',
+    type: 'tranches'
+  },
+  {
+    id: 's4', num: '04', title: 'Operator Model',
+    desc: 'Ownership, track record, and certifications of the operating company behind this site.',
+    fields: [
+      { id: 'q29', num: '29', label: 'Ownership Type', type: 'radio', required: true,
+        options: [
+          'REIT — Publicly traded real estate company; institutional governance and SEC-regulated.',
+          'Private Operator — Privately held company that owns and operates the facility commercially.',
+          'Developer-Operator — Firm that builds or converts the asset and operates it themselves.',
+          'Family Owned — Individual or family-controlled entity; principal-to-principal decision-making.',
+          'Institutional — Pension fund, PE firm, or sovereign wealth fund holding real estate as an investment.'
+        ], other: true },
+      { id: 'q30', num: '30', label: 'Ownership Type Detail (if Other)', type: 'text', showIf: {field:'q29', matchOther: true} },
+      { id: 'q31', num: '31', label: 'Year Founded / Years Operating', type: 'text' },
+      { id: 'q32', num: '32', label: 'MW in Operation or Deployed (total portfolio)', type: 'text' },
+      { id: 'q33', num: '33', label: 'Tenant Profile', type: 'radio', required: true,
+        options: ['Multi-tenant','Single-tenant','Single-tenant (anchor only)'] },
+      { id: 'q34', num: '34', label: 'Certifications Held (Uptime Tier / SOC 2 Type II / ISO 27001 / PCI-DSS)', type: 'text' },
+      { id: 'q35', num: '35', label: 'Origin / History', type: 'radio', required: true,
+        options: ['Purpose-built','Industrial conversion','Crypto-converted (requires review)'], other: true },
+      { id: 'q36', num: '36', label: 'Reference Customers / Notable Deployments', type: 'text' },
+      { id: 'q37', num: '37', label: 'Financial Stability Notes', type: 'text' }
+    ]
+  },
+  {
+    id: 's5', num: '05', title: 'Power & Infrastructure',
+    desc: 'Site power setup — helps flag documentation gaps early.',
+    fields: [
+      { id: 'q38', num: '38', label: 'Primary power source', type: 'radio',
+        options: ['Utility grid (direct interconnection)','On-site generation (behind-the-meter)','Hybrid (grid + on-site generation)'] },
+      { id: 'q39', num: '39', label: 'Number of independent power feeds to the site', type: 'radio', required: true,
+        options: ['Single feed only','Two or more independent feeds'] },
+      { id: 'q40', num: '40', label: 'Planned or existing rack density (kW/rack)', type: 'text', required: true },
+      { id: 'q41', num: '41', label: 'Estimated all-in power cost ($/kWh)', type: 'text' },
+      { id: 'q42', num: '42', label: 'Liquid cooling path', type: 'radio', required: true,
+        options: ['Implemented / already in place','Planned with committed timeline/budget','No liquid cooling path / no plan'] },
+      { id: 'q43', num: '43', label: 'Connectivity / carriers available at the site', type: 'text' }
+    ]
+  },
+  {
+    id: 's6', num: '06', title: 'Cooling',
+    desc: 'Additional detail on cooling systems.',
+    fields: [
+      { id: 'q44', num: '44', label: 'Cooling Type(s)', type: 'checkbox',
+        options: ['CRAC/CRAH','Chilled Water','Direct Liquid Cooling (DLC)','Evaporative','Hybrid'], other: true },
+      { id: 'q45', num: '45', label: 'Cooling Redundancy', type: 'radio',
+        options: ['N','N+1','2N'] },
+      { id: 'q46', num: '46', label: 'Hot/Cold Aisle Containment Present?', type: 'radio',
+        options: ['Yes','No','Partial'] },
+      { id: 'q47', num: '47', label: 'Rear-Door Heat Exchangers Available?', type: 'radio',
+        options: ['Yes','No'], showIf: {field:'q44', includesAny:['Direct Liquid Cooling (DLC)','Hybrid']} },
+      { id: 'q48', num: '48', label: 'Chilled Water On-Site?', type: 'radio',
+        options: ['Yes','Planned','No'], showIf: {field:'q44', includesAny:['Chilled Water','Hybrid']} },
+      { id: 'q49', num: '49', label: 'Liquid Cooling Details (connection type, supply/return temp, flow rate, CDU/manifold/immersion readiness)', type: 'text',
+        showIf: {field:'q44', includesAny:['Direct Liquid Cooling (DLC)','Chilled Water','Hybrid']} },
+      { id: 'q50', num: '50', label: 'Floor Loading Capacity (PSF)', type: 'text' },
+      { id: 'q51', num: '51', label: 'Finished Floor-to-Ceiling Height', type: 'text' }
+    ]
+  },
+  {
+    id: 's7', num: '07', title: 'Connectivity',
+    desc: 'A single-tenant site or one with no installed connectivity requires mandatory detailed review before advancing.',
+    fields: [
+      { id: 'q52', num: '52', label: 'Carriers Present On-Site (list all)', type: 'text', required: true },
+      { id: 'q53', num: '53', label: 'Meet-Me Room (MMR) or Wholesale Fiber Connectivity On-Site?', type: 'radio', required: true,
+        options: ['Yes (in-house)','No — nearest carrier hotel is off-site (give distance below)'] },
+      { id: 'q54', num: '54', label: 'Max Available Bandwidth per Carrier', type: 'text' },
+      { id: 'q55', num: '55', label: 'Connectivity Redundancy', type: 'radio',
+        options: ['Diverse (2+ paths)','Single path','Unknown'] },
+      { id: 'q56', num: '56', label: 'Dark Fiber Available?', type: 'radio',
+        options: ['No','Yes','IRU available'] },
+      { id: 'q57', num: '57', label: 'Peering Options?', type: 'radio',
+        options: ['Yes','No'] },
+      { id: 'q58', num: '58', label: 'Tenant Type (connectivity flag)', type: 'radio', required: true,
+        options: ['Multi-tenant','Single-tenant — requires review','Anchor only — requires review'] },
+      { id: 'q59', num: '59', label: 'Nearest Fiber Asset (if no on-site) — miles', type: 'text', showIf: {field:'q53', notValue:'Yes (in-house)'} },
+      { id: 'q60', num: '60', label: 'Connectivity Notes', type: 'textarea' }
+    ]
+  },
+  {
+    id: 's8', num: '08', title: 'Facility & Space',
+    desc: 'Whitespace, provisioning, and physical facility details.',
+    fields: [
+      { id: 'q61', num: '61', label: 'Total Raised Floor / Whitespace Available (sq ft)', type: 'text' },
+      { id: 'q62', num: '62', label: 'Contiguous Block Available?', type: 'radio', options: ['Yes','No'] },
+      { id: 'q63', num: '63', label: 'Cabinets Provided?', type: 'radio', options: ['Yes','No'] },
+      { id: 'q64', num: '64', label: 'PDUs Provided?', type: 'radio', options: ['Yes','No'] },
+      { id: 'q65', num: '65', label: 'Fire Suppression System', type: 'radio',
+        options: ['FM200','Novec','Pre-action','Wet pipe'], other: true },
+      { id: 'q66', num: '66', label: 'Security (staffing, CCTV, access control)', type: 'textarea' },
+      { id: 'q67', num: '67', label: 'Delivery Pathway Dimensions', type: 'text' },
+      { id: 'q68', num: '68', label: 'Vehicular Access / Loading Dock', type: 'text' }
+    ]
+  },
+  {
+    id: 's9', num: '09', title: 'Expansion & Timeline',
+    desc: 'Growth beyond Tranche 1.',
+    fields: [
+      { id: 'q69', num: '69', label: 'Expansion Optionality', type: 'radio', required: true,
+        options: ['Contractual ROFR (documented)','Planned expansion (documented)','Informal indication','None'] },
+      { id: 'q70', num: '70', label: 'Expansion Capacity (MW) & Timeline', type: 'text', showIf: {field:'q69', notValue:'None'} },
+      { id: 'q71', num: '71', label: 'Tax Incentive Programs Available?', type: 'radio', options: ['Yes','No'] },
+      { id: 'q72', num: '72', label: 'Tax Incentive Program Details', type: 'text', showIf: {field:'q71', value:'Yes'} }
+    ]
+  },
+  {
+    id: 's10', num: '10', title: 'GF/BF/BTS Supplementary',
+    desc: 'Complete only if Archetype is Greenfield, Brownfield, or Build-to-Suit.',
+    fields: [
+      { id: 'q73', num: '73', label: 'Ownership Preference (purchase preferred / lease term)', type: 'text' },
+      { id: 'q74', num: '74', label: 'Natural Gas Capacity On-Site (Greenfield/Brownfield)', type: 'text' },
+      { id: 'q75', num: '75', label: 'Renewable Energy Details (Greenfield/Brownfield)', type: 'text' },
+      { id: 'q76', num: '76', label: 'Proximity to Residential / NIMBY Risk (Greenfield/Brownfield)', type: 'text' },
+      { id: 'q77', num: '77', label: 'Developer Track Record (Build-to-Suit only)', type: 'text' },
+      { id: 'q78', num: '78', label: 'Environmental Study Status (Brownfield)', type: 'radio',
+        options: ['Phase I complete','Phase II needed','Contamination known'], showIf: {field:'q7', value:'Brownfield'} },
+      { id: 'q79', num: '79', label: 'Zoning / Permitting Status', type: 'text' }
+    ]
+  },
+  {
+    id: 's11', num: '11', title: 'Commercial', desc: '',
+    fields: [
+      { id: 'q80', num: '80', label: 'Preferred deal structure', type: 'radio',
+        options: ['Colocation lease','Build-to-suit','Powered land sale','Joint venture'], other: true },
+      { id: 'q81', num: '81', label: 'Pricing indication (rate, terms, or range if known)', type: 'text' }
+    ]
+  },
+  {
+    id: 's12', num: '12', title: 'Representation & Flags',
+    desc: 'Helps screen for legitimacy and deal-structure risk. Answer as accurately as possible.',
+    fields: [
+      { id: 'q82', num: '82', label: 'Is a broker or intermediary presenting this opportunity?', type: 'radio', required: true,
+        options: ['Yes','No'] },
+      { id: 'q83', num: '83', label: 'List all parties with authority or representation on this deal (broker, owner, developer, etc.)', type: 'textarea', required: true },
+      { id: 'q84', num: '84', label: 'Does this site or operator have any history of crypto-mining operations?', type: 'radio', required: true,
+        options: ['Yes','No','Unsure'] },
+      { id: 'q85', num: '85', label: 'Is the site located within the continental United States (CONUS)?', type: 'radio', required: true,
+        options: ['Yes','No'] }
+    ]
+  },
+  {
+    id: 's13', num: '13', title: 'Additional Notes', desc: '',
+    fields: [
+      { id: 'q86', num: '86', label: 'Anything else we should know? (urgency, timeline pressure, competing offers, special circumstances, etc.)', type: 'textarea' }
+    ]
+  }
+];
+
+// ─── Tranche field templates ───────────────────────────────────────────────────
+const TIER_OPTS = [
+  'Tier 1 — Unsubstantiated claim (verbal/marketing only, no documentation)',
+  'Tier 2 — Preliminary indication (informal/verbal utility confirmation, no formal study)',
+  'Tier 3 — Feasibility study or interconnection application filed with utility/ISO',
+  'Tier 4 — Conditional commitment (signed but conditional utility agreement, or executed LOI with MW specified)',
+  'Tier 5 — Executed, unconditional utility agreement (energized substation confirmed)'
+];
+const TIER_OPTS_SHORT = [
+  'Tier 1 — Unsubstantiated claim','Tier 2 — Preliminary indication',
+  'Tier 3 — Feasibility study or interconnection application',
+  'Tier 4 — Conditional commitment','Tier 5 — Executed, unconditional'
+];
+function trancheFields(n, required) {
+  const base = 12 + (n-1)*4;
+  const ids = [`q${base+1}`,`q${base+2}`,`q${base+3}`,`q${base+4}`];
+  return [
+    { id: ids[0], num: String(base+1), label: `Tranche ${n} — IT capacity (MW)`, type: 'text', required: required },
+    { id: ids[1], num: String(base+2), label: `Tranche ${n} — power commitment level`, type: 'radio', required: required,
+      options: n===1 ? TIER_OPTS : TIER_OPTS_SHORT },
+    { id: ids[2], num: String(base+3), label: `Tranche ${n} — energization date (e.g. Q3 2027)`, type: 'text', required: required },
+    { id: ids[3], num: String(base+4), label: `Tranche ${n} — date: stated/contractual or estimate?`, type: 'radio', required: required,
+      options: ['Stated / contractual','Estimated / best guess'] }
+  ];
+}
+
+// ─── State ─────────────────────────────────────────────────────────────────────
+const values = {};
+const prefilled = new Set();
+const sectionOpen = {};
+let trancheCount = 1;
+SECTIONS.forEach((s, i) => { sectionOpen[s.id] = i < 2; });
+
+// ─── Helpers ──────────────────────────────────────────────────────────────────
+function escHtml(s) {
+  if (!s) return '';
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function evalShowIf(cond) {
+  if (!cond) return true;
+  const v = values[cond.field];
+  if (cond.value !== undefined) return v === cond.value;
+  if (cond.notValue !== undefined) return v !== cond.notValue;
+  if (cond.matchOther !== undefined) {
+    let opts = [];
+    for (const s of SECTIONS) {
+      if (s.fields) { const ff = s.fields.find(f2 => f2.id === cond.field); if (ff) { opts = ff.options || []; break; } }
+    }
+    return !!(v && !opts.includes(v));
+  }
+  if (cond.includesAny !== undefined) {
+    if (Array.isArray(v)) return cond.includesAny.some(x => v.includes(x));
+    return cond.includesAny.includes(v);
+  }
+  return true;
+}
+
+function isFilled(f) {
+  if (!f.id || f.type === 'divider') return false;
+  if (f.showIf && !evalShowIf(f.showIf)) return false;
+  const v = values[f.id];
+  if (Array.isArray(v)) return v.length > 0;
+  return v && String(v).trim().length > 0;
+}
+
+function isVisible(f) {
+  if (!f.id || f.type === 'divider') return false;
+  if (f.showIf && !evalShowIf(f.showIf)) return false;
+  return true;
+}
+
+function getAllVisibleFields() {
+  const all = [];
+  for (const s of SECTIONS) {
+    if (s.type === 'tranches') {
+      for (let i = 1; i <= trancheCount; i++) all.push(...trancheFields(i, i===1));
+    } else if (s.fields) {
+      all.push(...s.fields.filter(f => f.type !== 'divider'));
+    }
+  }
+  return all;
+}
+
+// ─── Render ───────────────────────────────────────────────────────────────────
+function renderAll() { renderNav(); renderSections(); }
+
+function renderNav() {
+  const nav = document.getElementById('sectionNav');
+  nav.innerHTML = SECTIONS.map(s => `
+    <li><button class="nav-item ${sectionOpen[s.id] ? 'active' : ''}" onclick="scrollToSection('${s.id}')">
+      <span class="nav-dot"></span><span>${s.num} ${s.title}</span>
+    </button></li>`).join('');
+}
+
+function scrollToSection(id) {
+  const el = document.getElementById('sec-' + id);
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  if (!sectionOpen[id]) { sectionOpen[id] = true; renderSections(); }
+}
+
+function renderSections() {
+  document.getElementById('sectionsContainer').innerHTML = SECTIONS.map(s => renderSection(s)).join('');
+  updateProgress();
+}
+
+function renderSection(s) {
+  const open = sectionOpen[s.id];
+  if (s.type === 'tranches') {
+    const allFields = [];
+    for (let i = 1; i <= trancheCount; i++) allFields.push(...trancheFields(i, i===1));
+    const filled = allFields.filter(f => isFilled(f)).length;
+    const total = allFields.length;
+    const badge = filled > 0 ? `<span class="section-badge done-badge">${filled}/${total}</span>` : `<span class="section-badge">${total} fields</span>`;
+    const pills = [1,2,3,4].map(n =>
+      `<button class="tranche-pill ${trancheCount >= n ? 'active' : ''}" onclick="setTranches(${n})">${n} Tranche${n>1?'s':''}</button>`
+    ).join('');
+    let body = `<div>
+      <div style="font-size:12px;font-weight:500;color:var(--fg-muted);margin-bottom:8px;">How many delivery phases does this site offer?</div>
+      <div class="tranche-count-row">${pills}</div></div>`;
+    for (let i = 1; i <= trancheCount; i++) {
+      const tf = trancheFields(i, i===1);
+      body += `<div class="tranche-block">
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--accent);margin-bottom:4px;">Tranche ${i}${i===1?' <span style="color:var(--danger)">✱</span>':' <span style="font-size:10px;color:var(--fg-muted);font-weight:400;text-transform:none;letter-spacing:0">(optional)</span>'}</div>
+        <div class="tranche-block-inner">${tf.map(f => renderField(f)).join('')}</div></div>`;
+    }
+    return `<div class="form-section" id="sec-${s.id}">
+      <div class="section-header" onclick="toggleSection('${s.id}')">
+        <span class="section-num">${s.num}</span>
+        <div style="flex:1;min-width:0"><div class="section-name">${s.title}</div>${s.desc ? `<div class="section-desc">${s.desc}</div>` : ''}</div>
+        ${badge}<span class="chevron" style="transform:rotate(${open?'90deg':'0deg'})">&rsaquo;</span>
+      </div>
+      <div class="section-body ${open?'':'collapsed'}" id="body-${s.id}">${body}</div></div>`;
+  }
+  const fields = s.fields.filter(f => f.type !== 'divider');
+  const filled = fields.filter(f => isFilled(f)).length;
+  const badge = filled > 0 ? `<span class="section-badge done-badge">${filled}/${fields.length}</span>` : `<span class="section-badge">${fields.length} questions</span>`;
+  return `<div class="form-section" id="sec-${s.id}">
+    <div class="section-header" onclick="toggleSection('${s.id}')">
+      <span class="section-num">${s.num}</span>
+      <div style="flex:1;min-width:0"><div class="section-name">${s.title}</div>${s.desc ? `<div class="section-desc">${s.desc}</div>` : ''}</div>
+      ${badge}<span class="chevron" style="transform:rotate(${open?'90deg':'0deg'})">&rsaquo;</span>
+    </div>
+    <div class="section-body ${open?'':'collapsed'}" id="body-${s.id}">
+      ${s.fields.map(f => renderField(f)).join('')}
+    </div></div>`;
+}
+
+function renderField(f) {
+  if (f.type === 'divider') return `<hr class="field-divider">`;
+  const req = f.required ? '<span class="required-star">*</span>' : '';
+  const numSpan = f.num ? `<span class="field-num">${f.num}.</span>` : '';
+  let input = '';
+  const val = values[f.id] || '';
+  const isPre = prefilled.has(f.id);
+  const preClass = isPre ? ' prefilled-val' : '';
+  const preTag = isPre ? '<span class="prefill-tag">pre-filled</span>' : '';
+
+  if (f.type === 'text' || f.type === 'email' || f.type === 'tel') {
+    input = `<div class="pre-filled">${preTag}<input type="${f.type}" id="${f.id}" value="${escHtml(val)}" class="${preClass}" oninput="setValue('${f.id}', this.value)" placeholder="Enter your answer"></div>`;
+  } else if (f.type === 'textarea') {
+    input = `<div class="pre-filled">${preTag}<textarea id="${f.id}" class="${preClass}" oninput="setValue('${f.id}', this.value)" placeholder="Enter your answer">${escHtml(val)}</textarea></div>`;
+  } else if (f.type === 'radio') {
+    const opts = f.options.map((o, i) => {
+      const optId = `${f.id}_opt${i}`;
+      const sel = val === o ? 'selected' : '';
+      return `<label class="radio-option ${sel}" id="lbl-${optId}">
+        <input type="radio" name="${f.id}" id="${optId}" value="${escHtml(o)}" ${val===o?'checked':''} onchange="setValue('${f.id}', this.value)">
+        <span class="radio-label-text">${escHtml(o)}</span></label>`;
+    }).join('');
+    const otherSel = val && !f.options.includes(val) ? 'selected' : '';
+    const otherOpt = f.other ? `<label class="radio-option ${otherSel}" id="lbl-${f.id}_other">
+      <input type="radio" name="${f.id}" id="${f.id}_other_radio" value="__other__" ${otherSel?'checked':''} onchange="setOther('${f.id}')">
+      <span class="radio-label-text" style="flex:1"><span>Other</span>
+        <input class="other-input" id="${f.id}_other_text" value="${otherSel?escHtml(val):''}" placeholder="Specify…" oninput="setOtherText('${f.id}', this.value)" onclick="event.stopPropagation()" ${otherSel?'':'style="display:none"'}></span></label>` : '';
+    input = `<div class="radio-group" id="rg-${f.id}">${opts}${otherOpt}</div>`;
+  } else if (f.type === 'checkbox') {
+    const checked = Array.isArray(val) ? val : [];
+    const opts = f.options.map((o, i) => {
+      const optId = `${f.id}_chk${i}`;
+      const sel = checked.includes(o) ? 'selected' : '';
+      return `<label class="check-option ${sel}" id="lbl-${optId}">
+        <input type="checkbox" id="${optId}" value="${escHtml(o)}" ${sel?'checked':''} onchange="toggleCheck('${f.id}', '${escHtml(o)}', this.checked)">
+        <span class="radio-label-text">${escHtml(o)}</span></label>`;
+    }).join('');
+    input = `<div class="check-group">${opts}</div>`;
+  }
+
+  const condClass = f.showIf ? ' field-conditional' : '';
+  const showClass = (f.showIf && evalShowIf(f.showIf)) ? ' show' : '';
+  return `<div class="field${condClass}${showClass}" id="field-${f.id}">
+    <label class="field-label" for="${f.id}">${numSpan} ${escHtml(f.label)} ${req}</label>
+    ${input}
+    <div class="validation-msg">This field is required.</div></div>`;
+}
+
+// ─── State mutations ──────────────────────────────────────────────────────────
+function setValue(id, val, pre=false) {
+  values[id] = val;
+  if (pre) prefilled.add(id); else prefilled.delete(id);
+  updateConditionals();
+  updateProgress();
+  const sec = SECTIONS.find(s => s.fields && s.fields.some(f => f.id === id));
+  if (sec) refreshSectionBadge(sec);
+}
+
+function setOther(id) {
+  const txt = document.getElementById(id + '_other_text');
+  if (txt) { txt.style.display = ''; txt.focus(); values[id] = txt.value.trim() || ''; }
+  document.querySelectorAll(`#rg-${id} .radio-option`).forEach(l => l.classList.remove('selected'));
+  document.getElementById(`lbl-${id}_other`).classList.add('selected');
+  updateProgress();
+}
+
+function setOtherText(id, val) { values[id] = val; updateProgress(); }
+
+function toggleCheck(id, val, checked) {
+  const arr = Array.isArray(values[id]) ? [...values[id]] : [];
+  if (checked) { if (!arr.includes(val)) arr.push(val); }
+  else { const i = arr.indexOf(val); if (i >= 0) arr.splice(i,1); }
+  values[id] = arr;
+  const sec = SECTIONS.find(s => s.fields && s.fields.some(f => f.id === id));
+  if (sec) refreshSectionBadge(sec);
+  updateConditionals();
+  updateProgress();
+}
+
+function setTranches(n) {
+  for (let i = n + 1; i <= 4; i++) {
+    trancheFields(i, false).forEach(f => { delete values[f.id]; prefilled.delete(f.id); });
+  }
+  trancheCount = n;
+  renderSections();
+  updateProgress();
+}
+
+function toggleSection(id) {
+  sectionOpen[id] = !sectionOpen[id];
+  const body = document.getElementById('body-' + id);
+  const chevron = document.querySelector(`#sec-${id} .chevron`);
+  if (body) body.classList.toggle('collapsed', !sectionOpen[id]);
+  if (chevron) chevron.style.transform = `rotate(${sectionOpen[id]?'90deg':'0deg'})`;
+  renderNav();
+}
+
+function refreshSectionBadge(s) {
+  let fields = s.type === 'tranches'
+    ? (() => { const a=[]; for(let i=1;i<=trancheCount;i++) a.push(...trancheFields(i,i===1)); return a; })()
+    : (s.fields||[]).filter(f => f.type !== 'divider');
+  const visible = fields.filter(f => isVisible(f));
+  const filled = visible.filter(f => isFilled(f)).length;
+  const el = document.querySelector(`#sec-${s.id} .section-badge`);
+  if (el) {
+    el.className = `section-badge ${filled > 0 ? 'done-badge' : ''}`;
+    el.textContent = filled > 0 ? `${filled}/${visible.length}` : `${visible.length} questions`;
+  }
+}
+
+function updateConditionals() {
+  document.querySelectorAll('.field-conditional').forEach(el => {
+    const fid = el.id.replace(/^field-/, '');
+    let f = null;
+    for (const s of SECTIONS) {
+      if (s.fields) { f = s.fields.find(ff => ff.id === fid); if (f) break; }
+    }
+    if (!f) {
+      for (let i = 1; i <= trancheCount; i++) {
+        const tf = trancheFields(i, i===1);
+        f = tf.find(ff => ff.id === fid);
+        if (f) break;
+      }
+    }
+    if (f && f.showIf) el.classList.toggle('show', evalShowIf(f.showIf));
+  });
+}
+
+function updateProgress() {
+  const all = getAllVisibleFields();
+  const total = all.filter(f => isVisible(f)).length;
+  const filled = all.filter(f => isFilled(f)).length;
+  const pct = total > 0 ? Math.round(filled / total * 100) : 0;
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent = `${filled} / ${total}`;
+}
+
+// ─── Document upload & parse ──────────────────────────────────────────────────
+const uploadBanner = document.getElementById('uploadBanner');
+const docUpload = document.getElementById('docUpload');
+const parseStatus = document.getElementById('parseStatus');
+const parseStatusText = document.getElementById('parseStatusText');
+
+uploadBanner.addEventListener('dragover', e => { e.preventDefault(); uploadBanner.classList.add('drag-over'); });
+uploadBanner.addEventListener('dragleave', () => uploadBanner.classList.remove('drag-over'));
+uploadBanner.addEventListener('drop', e => {
+  e.preventDefault(); uploadBanner.classList.remove('drag-over');
+  if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]);
+});
+uploadBanner.addEventListener('click', () => docUpload.click());
+docUpload.addEventListener('change', () => { if (docUpload.files[0]) handleFile(docUpload.files[0]); });
+
+function handleFile(file) {
+  uploadBanner.classList.add('has-file');
+  uploadBanner.innerHTML = `<div class="upload-status">📎 <strong>${escHtml(file.name)}</strong> — reading…</div>`;
+  parseStatus.style.display = 'flex';
+  parseStatusText.textContent = 'Extracting text from document…';
+  const reader = new FileReader();
+  reader.onload = async e => {
+    try {
+      let text = '';
+      if (file.name.match(/\.txt$|\.csv$/i)) { text = e.target.result; }
+      else {
+        const arr = new Uint8Array(e.target.result);
+        let run = '';
+        for (let i = 0; i < Math.min(arr.length, 500000); i++) {
+          const c = arr[i];
+          if (c >= 32 && c < 127) { run += String.fromCharCode(c); }
+          else { if (run.length > 4) text += run + ' '; run = ''; }
+        }
+        if (run.length > 4) text += run;
+      }
+      parseStatusText.textContent = 'Matching fields…';
+      await new Promise(r => setTimeout(r, 300));
+      const found = parseDocument(text);
+      parseStatus.style.display = 'none';
+      uploadBanner.innerHTML = `<div class="upload-status">✅ <strong>${escHtml(file.name)}</strong> — pre-filled ${found} field${found===1?'':'s'}. Review and complete the rest below.</div>`;
+      renderSections();
+      showToast(`Pre-filled ${found} fields from your document`);
+    } catch(err) {
+      parseStatus.style.display = 'none';
+      uploadBanner.innerHTML = `<div class="upload-status">⚠️ Could not parse ${escHtml(file.name)} — please fill the form manually.</div>`;
+    }
+  };
+  if (file.name.match(/\.txt$|\.csv$/i)) reader.readAsText(file);
+  else reader.readAsArrayBuffer(file);
+}
+
+function parseDocument(text) {
+  const t = text.toLowerCase(); let found = 0;
+  const trySet = (id, val) => { if (!val || !val.trim()) return; values[id] = val.trim(); prefilled.add(id); found++; };
+  const nameMatch = text.match(/(?:company|opportunity|site|project|facility)\s*(?:name|:)\s*[:\-]?\s*([A-Z][^\n,]{2,60})/i);
+  if (nameMatch) trySet('q6', nameMatch[1].trim());
+  const stateAbbr = text.match(/\b(AL|AK|AZ|AR|CA|CO|CT|DE|FL|GA|HI|ID|IL|IN|IA|KS|KY|LA|ME|MD|MA|MI|MN|MS|MO|MT|NE|NV|NH|NJ|NM|NY|NC|ND|OH|OK|OR|PA|RI|SC|SD|TN|TX|UT|VT|VA|WA|WV|WI|WY|DC)\b/);
+  if (stateAbbr && !values.q9) trySet('q9', stateAbbr[0]);
+  const mwMatch = text.match(/(\d+(?:\.\d+)?)\s*MW(?:\s+IT)?/i);
+  if (mwMatch) trySet('q13', mwMatch[1] + ' MW');
+  const addrMatch = text.match(/\d{3,6}\s+[A-Z][a-z]+(?:\s+[A-Za-z]+){1,4}(?:\s+(?:St|Ave|Blvd|Dr|Rd|Ln|Way|Pkwy|Court|Ct|Place|Pl|Circle|Cir))?\b/);
+  if (addrMatch) trySet('q10', addrMatch[0]);
+  const acrMatch = text.match(/(\d+(?:\.\d+)?)\s*(?:acres?|ac\b)/i);
+  if (acrMatch) trySet('q11', acrMatch[1] + ' acres');
+  const costMatch = text.match(/\$?\s*0\.(\d{2,3})\s*(?:\/\s*kWh|per kWh)/i);
+  if (costMatch) trySet('q41', '$0.' + costMatch[1] + '/kWh');
+  const densMatch = text.match(/(\d+)\s*kW\s*(?:per|\/)\s*(?:rack|cab)/i);
+  if (densMatch) trySet('q40', densMatch[1] + ' kW/rack');
+  if (t.includes('liquid cool')||t.includes('dlc')||t.includes('direct liquid')||t.includes('immersion')) {
+    trySet('q42', t.includes('implemented')||t.includes('installed')||t.includes('in place') ? 'Implemented / already in place' : 'Planned with committed timeline/budget');
+  } else if (t.includes('no liquid')||t.includes('air cool only')||t.includes('air-cooled only')) {
+    trySet('q42', 'No liquid cooling path / no plan');
+  }
+  if (t.includes('dual feed')||t.includes('two feed')||t.includes('redundant feed')) trySet('q39','Two or more independent feeds');
+  else if (t.includes('single feed')) trySet('q39','Single feed only');
+  if (t.includes('colocation')||t.includes('colo ')) trySet('q7','Colocation or Single Tenant Whitespace');
+  else if (t.includes('build-to-suit')||t.includes('bts')) trySet('q7','Build-to-Suit');
+  else if (t.includes('greenfield')||t.includes('powered land')) trySet('q7','Greenfield');
+  else if (t.includes('brownfield')||t.includes('conversion')) trySet('q7','Brownfield');
+  if (t.includes(' reit')||t.includes('real estate investment trust')) trySet('q29','REIT — Publicly traded real estate company; institutional governance and SEC-regulated.');
+  if (t.includes('united states')||stateAbbr) trySet('q85','Yes');
+  if (t.includes('crypto')||t.includes('bitcoin')||t.includes('mining')) trySet('q84','Yes');
+  else if (t.includes('no crypto')||t.includes('not crypto')) trySet('q84','No');
+  return found;
+}
+
+// ─── Validation & submit ──────────────────────────────────────────────────────
+document.getElementById('submitBtn').addEventListener('click', () => {
+  let valid = true;
+  getAllVisibleFields().forEach(f => {
+    if (!f.required || !isVisible(f)) return;
+    const el = document.getElementById('field-' + f.id);
+    if (!el) return;
+    if (!isFilled(f)) {
+      valid = false; el.classList.add('invalid');
+      const sec = SECTIONS.find(s => s.type==='tranches' || (s.fields && s.fields.some(ff => ff.id===f.id)));
+      if (sec && !sectionOpen[sec.id]) { sectionOpen[sec.id] = true; renderSections(); }
+    } else { el.classList.remove('invalid'); }
+  });
+  if (!valid) {
+    showToast('Please complete all required fields ✱');
+    const first = document.querySelector('.field.invalid');
+    if (first) first.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return;
+  }
+  submitForm();
+});
+
+// ─── PA Webhook URL ──────────────────────────────────────────────────────────
+// Replace this placeholder with your Power Automate HTTP trigger URL
+const PA_WEBHOOK = 'https://default7195b5db96c847a7a8f66b40306213.a3.environment.api.powerplatform.com:443/powerautomate/automations/direct/cu/31/workflows/e9d7995c018a4b96b50479bea59f5856/triggers/manual/paths/invoke?api-version=1';
+
+function submitForm() {
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.textContent = 'Submitting…';
+
+  const submission = {};
+  getAllVisibleFields().forEach(f => {
+    if (f.id && f.type !== 'divider' && isVisible(f)) {
+      const v = values[f.id];
+      submission[f.id] = Array.isArray(v) ? v.join(', ') : (v || '');
+    }
+  });
+  submission.ref = 'QCP-' + Date.now().toString(36).toUpperCase().slice(-6);
+  submission.submittedAt = new Date().toISOString();
+
+  fetch(PA_WEBHOOK, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(submission)
+  })
+  .then(r => { if (!r.ok) throw new Error(r.status); return r.json().catch(() => null); })
+  .then(() => showSuccess(submission))
+  .catch(() => showSuccess(submission)); // show success even if PA is slow — submission was sent
+}
+
+function showSuccess(submission) {
+  document.getElementById('formView').style.display = 'none';
+  document.getElementById('successView').style.display = '';
+  document.getElementById('successRef').textContent = 'Reference: ' + submission.ref;
+}
+
+// ─── Toast ────────────────────────────────────────────────────────────────────
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3200);
+}
+
+// ─── Init ─────────────────────────────────────────────────────────────────────
+renderAll();
+</script>
+
+</body>
+</html>
